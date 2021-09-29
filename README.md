@@ -1,4 +1,7 @@
 ### This repository contains api for getting stroke prediction.
+### The output would be the prediction percentage of Stroke.
+### Several pretrained models are present in the models folder and input data in the input.
+### App is deployed on heroku on [link](https://stroke-model-prediction-flask.herokuapp.com).
 ### The api recives the following parameters
 ```json
 {
@@ -13,5 +16,3 @@
     "bmi":18,
     "smoking_status":"smokes"
 }
-### The output would be the prediction percentage of Stroke.
-### Several pretrained models are present in the models folder and input data in the input.
