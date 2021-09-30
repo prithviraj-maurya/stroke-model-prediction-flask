@@ -4,6 +4,8 @@ from sklearn.preprocessing import LabelEncoder, MinMaxScaler
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 
+import risk_recommendation
+
 
 file = './models/gb_1.bin'
 
@@ -97,7 +99,7 @@ def make_prediction(df):
 app = Flask(__name__)
 CORS(app)
 
-@app.route('/predict', methods=['POST'])
+@app.route('/predict/stroke', methods=['POST'])
 def infer_image():
     data = request.json
 
@@ -105,4 +107,8 @@ def infer_image():
     df = preprocess_data(data)
 
     # Return on a JSON format
-    return jsonify(prediction=make_prediction(df))
+    return jsonify(
+        prediction=make_prediction(df),
+        risks=risk_recommendation.stroke['risks'],
+        recommendations=risk_recommendation.stroke['recommendations']
+    )
