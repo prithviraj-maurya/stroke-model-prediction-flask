@@ -17,6 +17,8 @@ lables = {}
 with open(JSON_LABEL, "r") as json_file:
     lables = json.load(json_file)
 
+# load model from .pkl file
+model = pickle.load(open(RANDOM_FOREST, 'rb'))
 
 def preprocess_data(pred_arr):
     X = pd.DataFrame(pred_arr, index=[0])
@@ -31,14 +33,13 @@ def preprocess_data(pred_arr):
     return X_scaler
 
 def make_prediction(data):
-    # load model from .pkl file
-    rdf = pickle.load(open(RANDOM_FOREST, 'rb'))
     # run prediction
-    rdf_pred_prob = rdf.predict_proba(data)
+    pred_prob = model.predict_proba(data)
     # fetch predictions
-    non_stroke, stroke = rdf_pred_prob[0]
+    non_stroke, stroke = pred_prob[0]
     result = round((stroke * 100), 2)
-    return str(result)
+    feature_impartances = model.feature_importances_
+    return str(result), feature_impartances
 
 ## Flask api
 app = Flask(__name__)
@@ -47,13 +48,14 @@ CORS(app)
 @app.route('/predict/stroke', methods=['POST'])
 def infer_image():
     data = request.json
-
     # Prepare the dataframe
     df = preprocess_data(data)
 
+    predictions, feature_importances = make_prediction(df)
     # Return on a JSON format
     return jsonify(
-        prediction=make_prediction(df),
+        prediction= predictions,
+        feature_importances=feature_importances.tolist(),
         risks=risk_recommendation.stroke['risks'],
         recommendations=risk_recommendation.stroke['recommendations']
     )
