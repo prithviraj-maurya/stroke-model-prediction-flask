@@ -14,3 +14,23 @@ stroke = {
         'Avoid smoking'
     ]
 }
+
+kidney = {
+    'risks': [
+        "Arterial hypertension",
+        "Diabetes",
+        "Hyperlipidemia",
+        "Obesity",
+        "Smoking",
+        "Autoimmune diseases",
+        "Acute renal failure"
+    ],
+    'recommendations': [
+        'For overweight patients should reduce weight',
+        'Sufficient Physical excercise',
+        'Avoid table salt in food',
+        'Avoid intake of alocohol',
+        'Avoid smoking'
+    ]
+}
+
